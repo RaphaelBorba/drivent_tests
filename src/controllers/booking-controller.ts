@@ -35,31 +35,31 @@ export async function postBooking(req: AuthenticatedRequest, res: Response) {
 
     const room = await hotelRepository.getRoomById(req.body.roomId)
 
-    if(!room) return res.sendStatus(404)
+    if (!room) return res.sendStatus(404)
 
-    if(await checkIfRoomIsFull(req.body.roomId)) return res.sendStatus(403)
+    if (await checkIfRoomIsFull(req.body.roomId)) return res.sendStatus(403)
 
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId)
 
     if (!enrollment) return res.sendStatus(403)
 
     const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id)
-    
+
     if (!ticket) return res.sendStatus(403)
 
-    if(ticket.status !== 'PAID') return res.sendStatus(403)
+    if (ticket.status !== 'PAID') return res.sendStatus(403)
 
     if (ticket.TicketType.isRemote === true) res.sendStatus(403)
 
     try {
-        
+
         const book = await postBookingDB(userId, req.body.roomId)
-        const obj = {roomId: book.roomId}
+        const obj = { roomId: book.roomId }
 
         res.status(200).send(obj)
 
     } catch (error) {
         res.sendStatus(500)
-        
+
     }
 }
