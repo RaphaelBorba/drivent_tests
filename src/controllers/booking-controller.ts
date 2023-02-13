@@ -7,9 +7,9 @@ export async function getBooking(req: AuthenticatedRequest, res:Response){
 
     const {userId} = req
 
-    const enrollment = enrollmentRepository.findWithAddressByUserId(userId)
-
-    console.log(enrollment)
+    const enrollment = await enrollmentRepository.findWithAddressByUserId(userId)
 
     if(!enrollment) return res.sendStatus(404)
+
+    res.send(200)
 }
