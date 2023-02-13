@@ -20,3 +20,11 @@ export async function postBookingDB(userId: number, roomId:number){
         }
     })
 }
+
+export async function updateBooking(bookingId:number, newRoomId:number){
+
+    return prisma.booking.update({
+        where:{id: bookingId},
+        data:{roomId: newRoomId}
+    })
+}
