@@ -19,17 +19,12 @@ export async function getBooking(req: AuthenticatedRequest, res: Response) {
 
     if (ticket.TicketType.isRemote === true) res.sendStatus(400)
 
+    const booking = await getBookingDB(userId)
 
+    if (!booking) return res.sendStatus(404)
 
-    try {
-        const booking = await getBookingDB(userId)
+    console.log(booking)
 
-        if (!booking) return res.sendStatus(404)
-        console.log(booking)
-        res.status(200).send(booking)
+    res.status(200).send(booking)
 
-    } catch (error) {
-        console.log(error)
-        res.sendStatus(500)
-    }
 }

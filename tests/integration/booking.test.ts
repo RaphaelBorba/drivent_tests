@@ -113,10 +113,28 @@ describe("GET /booking", () => {
             const createdHotel = await createHotel();
             const createdRoom = await createRoomWithHotelId(createdHotel.id);
             const createdBooking = await createBookingWithRoomIdAndUserId(createdRoom.id, user.id)
-            
+
             const response = await server.get("/booking").set("Authorization", `Bearer ${token}`);
             
+            expect(response.body).toEqual(
+                {
+                    id: createdBooking.id,
+                    userId: createdBooking.userId,
+                    roomId: createdBooking.roomId,
+                    createdAt: createdBooking.createdAt.toISOString(),
+                    updatedAt: createdBooking.updatedAt.toISOString(),
+                    Room: {
+                      id: createdRoom.id,
+                      name: createdRoom.name,
+                      capacity: createdRoom.capacity,
+                      hotelId: createdRoom.hotelId,
+                      createdAt: createdRoom.createdAt.toISOString(),
+                      updatedAt: createdRoom.updatedAt.toISOString()
+                    }
+                  }
+            )
             expect(response.status).toBe(200)
+            
 
         })
 
