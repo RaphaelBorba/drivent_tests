@@ -10,3 +10,13 @@ export async function getBookingDB(userId:number) {
         }
     })
 }
+
+export async function postBookingDB(userId: number, roomId:number){
+
+    return prisma.booking.create({
+        data:{
+            roomId,
+            userId
+        }
+    })
+}
